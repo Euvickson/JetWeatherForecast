@@ -56,6 +56,7 @@ dependencies {
     val coroutinesVersion = "1.7.3"
     val hiltVersion = "2.48.1"
     val navVersion = "2.7.5"
+    val roomVersion = "2.6.1"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -81,16 +82,27 @@ dependencies {
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    //GSON converter
+    // JSON Converter
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // OkHttp
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+
+    //Room
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutinesVersion")
 
-    //lifecycle
+    //coroutine lifecycle Scopes
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    //Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 
     //Coil
