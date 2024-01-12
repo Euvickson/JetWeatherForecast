@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.euvickson.jetweatherforecast.data.DataOrException
+import br.com.euvickson.jetweatherforecast.model.Weather
 import br.com.euvickson.jetweatherforecast.model.WeatherObject
 import br.com.euvickson.jetweatherforecast.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: WeatherRepository): ViewModel() {
 
-    private val data: MutableState<DataOrException<WeatherObject, Boolean, Exception>> = mutableStateOf(DataOrException(null, true, Exception()))
+    private val data: MutableState<DataOrException<Weather, Boolean, Exception>> = mutableStateOf(DataOrException(null, true, Exception()))
 
     init {
         loadWeather()
