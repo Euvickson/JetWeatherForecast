@@ -1,14 +1,35 @@
 package br.com.euvickson.jetweatherforecast.screens.main
 
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.produceState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import br.com.euvickson.jetweatherforecast.data.DataOrException
+import br.com.euvickson.jetweatherforecast.model.Weather
 
 @Composable
 fun MainScreen(
     navController: NavController,
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
-    Text(text = "Main Screen")
+    ShowData(mainViewModel)
+}
+
+@Composable
+fun ShowData(mainViewModel: MainViewModel) {
+    
+    val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
+        initialValue = DataOrException(loading = true)
+    ) {
+        value = mainViewModel.getWeatherData(city = "Seattle")
+    }.value
+
+    if (weatherData.loading == true) {
+        CircularProgressIndicator()
+    } else if (weatherData.data != null){
+        Text(text = "Main Screen ${weatherData.data!!.city.country}")
+    }
+
 }
