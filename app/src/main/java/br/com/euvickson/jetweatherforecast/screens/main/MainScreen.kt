@@ -1,15 +1,12 @@
 package br.com.euvickson.jetweatherforecast.screens.main
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -29,9 +26,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.euvickson.jetweatherforecast.data.DataOrException
 import br.com.euvickson.jetweatherforecast.model.Weather
+import br.com.euvickson.jetweatherforecast.utils.formatDate
+import br.com.euvickson.jetweatherforecast.utils.formatDecimals
 import br.com.euvickson.jetweatherforecast.widgets.WeatherAppBar
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 
 @Composable
 fun MainScreen(
@@ -42,7 +40,7 @@ fun MainScreen(
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = mainViewModel.getWeatherData(city = "Seattle")
+        value = mainViewModel.getWeatherData(city = "lisbon")
     }.value
 
     if (weatherData.loading == true) {
@@ -90,7 +88,7 @@ fun MainContent(data: Weather) {
     ) {
 
             Text(
-                text = "Jan 22",
+                text = formatDate(data.list[0].dt),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontWeight = FontWeight.SemiBold,
@@ -113,8 +111,8 @@ fun MainContent(data: Weather) {
                     //https://openweathermap.org/img/wn/10d.png
                     WeatherStateImage(imageUrl = imageUrl)
 
-                    Text(text = "56", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold)
-                    Text(text = "Snow", fontStyle = FontStyle.Italic, fontSize = 20.sp)
+                    Text(text = formatDecimals(data.list[0].temp.day) + "º", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold)
+                    Text(text = data.list[0].weather[0].main, fontStyle = FontStyle.Italic, fontSize = 20.sp)
 
                 }
 
