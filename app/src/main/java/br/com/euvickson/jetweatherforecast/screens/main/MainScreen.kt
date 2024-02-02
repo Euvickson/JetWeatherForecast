@@ -3,12 +3,15 @@ package br.com.euvickson.jetweatherforecast.screens.main
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -18,14 +21,17 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import br.com.euvickson.jetweatherforecast.R
 import br.com.euvickson.jetweatherforecast.data.DataOrException
 import br.com.euvickson.jetweatherforecast.model.Weather
+import br.com.euvickson.jetweatherforecast.model.WeatherItem
 import br.com.euvickson.jetweatherforecast.utils.formatDate
 import br.com.euvickson.jetweatherforecast.utils.formatDecimals
 import br.com.euvickson.jetweatherforecast.widgets.WeatherAppBar
@@ -40,7 +46,7 @@ fun MainScreen(
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = mainViewModel.getWeatherData(city = "lisbon")
+        value = mainViewModel.getWeatherData(city = "seattle")
     }.value
 
     if (weatherData.loading == true) {
@@ -108,7 +114,7 @@ fun MainContent(data: Weather) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    //https://openweathermap.org/img/wn/10d.png
+                    //https://openweathermap.org/img/wn/01d.png
                     WeatherStateImage(imageUrl = imageUrl)
 
                     Text(text = formatDecimals(data.list[0].temp.day) + "º", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.ExtraBold)
@@ -117,11 +123,38 @@ fun MainContent(data: Weather) {
                 }
 
             }
+        HumidityWindPressureRow(data.list[0])
+        Divider()
+    }
+}
 
+@Composable
+fun HumidityWindPressureRow(weather: WeatherItem) {
+    Row (modifier = Modifier
+        .padding(12.dp)
+        .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween){
 
+        Row (modifier = Modifier.padding(4.dp)){
+            Icon(painter = painterResource(id = R.drawable.humidity), contentDescription = "Humidity Icon", modifier = Modifier.size(20.dp))
+            Text(text = "${weather.humidity}%",
+                style = MaterialTheme.typography.bodyMedium)
+        }
+
+        Row (modifier = Modifier.padding(4.dp)){
+            Icon(painter = painterResource(id = R.drawable.pressure), contentDescription = "Pressure Icon", modifier = Modifier.size(20.dp))
+            Text(text = "${weather.pressure} psi",
+                style = MaterialTheme.typography.bodyMedium)
+        }
+
+        Row (modifier = Modifier.padding(4.dp)){
+            Icon(painter = painterResource(id = R.drawable.wind), contentDescription = "Wind Icon", modifier = Modifier.size(20.dp))
+            Text(text = "${weather.gust}mph",
+                style = MaterialTheme.typography.bodyMedium)
+        }
 
     }
-
 }
 
 @Composable
