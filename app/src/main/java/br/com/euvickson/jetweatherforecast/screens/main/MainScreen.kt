@@ -33,6 +33,7 @@ import br.com.euvickson.jetweatherforecast.data.DataOrException
 import br.com.euvickson.jetweatherforecast.model.Weather
 import br.com.euvickson.jetweatherforecast.model.WeatherItem
 import br.com.euvickson.jetweatherforecast.utils.formatDate
+import br.com.euvickson.jetweatherforecast.utils.formatDateTime
 import br.com.euvickson.jetweatherforecast.utils.formatDecimals
 import br.com.euvickson.jetweatherforecast.widgets.WeatherAppBar
 import coil.compose.AsyncImage
@@ -46,7 +47,7 @@ fun MainScreen(
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = mainViewModel.getWeatherData(city = "seattle")
+        value = mainViewModel.getWeatherData(city = "sergipe")
     }.value
 
     if (weatherData.loading == true) {
@@ -125,6 +126,30 @@ fun MainContent(data: Weather) {
             }
         HumidityWindPressureRow(data.list[0])
         Divider()
+        SunsetSunRiseRow(data.list[0])
+    }
+}
+
+@Composable
+fun SunsetSunRiseRow(weather: WeatherItem) {
+    Row (modifier = Modifier
+        .fillMaxWidth()
+        .padding(top = 15.dp, bottom = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween){
+
+        Row (modifier = Modifier.padding(4.dp)){
+            Icon(painter = painterResource(id = R.drawable.sunrise), contentDescription = "Sunrise Icon", modifier = Modifier.size(30.dp))
+            Text(text = formatDateTime(weather.sunrise),
+                style = MaterialTheme.typography.bodyMedium)
+        }
+
+        Row (modifier = Modifier.padding(4.dp)){
+            Text(text = formatDateTime(weather.sunset),
+                style = MaterialTheme.typography.bodyMedium)
+            Icon(painter = painterResource(id = R.drawable.sunset), contentDescription = "Sunset Icon", modifier = Modifier.size(30.dp))
+        }
+
     }
 }
 
