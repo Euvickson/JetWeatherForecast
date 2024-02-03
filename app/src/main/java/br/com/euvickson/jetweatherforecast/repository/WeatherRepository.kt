@@ -11,7 +11,7 @@ class WeatherRepository @Inject constructor(private val api: WeatherApi) {
 
     suspend fun getWeather(
         cityQuerry: String,
-        units: String = "imperial"
+        units: String = "metric"
     ): DataOrException<Weather, Boolean, Exception> {
 
         val response = try {
