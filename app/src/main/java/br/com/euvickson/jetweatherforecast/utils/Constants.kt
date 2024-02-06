@@ -1,8 +1,10 @@
 package br.com.euvickson.jetweatherforecast.utils
 
 object Constants {
-    const val BASE_URL = "https://api.openweathermap.org/"
-    const val API_KEY = "ed60fcfbd110ee65c7150605ea8aceea"
+    //Place The Base URL here
+    const val BASE_URL = ""
+    //Place The API Key Down Bellow
+    const val API_KEY = ""
 }
 
-// https://api.openweathermap.org/data/2.5/forecast/daily?q=lisbon&appid=ed60fcfbd110ee65c7150605ea8aceea&units=imperial
+// https://api.openweathermap.org/data/2.5/forecast/daily?q=lisbon&units=imperial
