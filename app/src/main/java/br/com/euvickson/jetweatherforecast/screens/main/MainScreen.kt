@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.euvickson.jetweatherforecast.data.DataOrException
 import br.com.euvickson.jetweatherforecast.model.Weather
+import br.com.euvickson.jetweatherforecast.navigation.WeatherScreens
 import br.com.euvickson.jetweatherforecast.utils.formatDate
 import br.com.euvickson.jetweatherforecast.utils.formatDecimals
 import br.com.euvickson.jetweatherforecast.widgets.DayInfo
@@ -69,6 +70,9 @@ fun MainScaffold(weather: Weather, navController: NavController) {
             WeatherAppBar(
                 title = weather.city.name + ", ${weather.city.country}",
                 navController = navController,
+                onAddActionClicked = {
+                                     navController.navigate(WeatherScreens.SearchScreen.name)
+                },
                 elevation = 5.dp,
             ) {
                 Log.d("TAG", "MainScraffold: Button Clicked")
