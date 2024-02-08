@@ -1,4 +1,4 @@
-package br.com.euvickson.jetweatherforecast.screens.Search
+package br.com.euvickson.jetweatherforecast.screens.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import br.com.euvickson.jetweatherforecast.navigation.WeatherScreens
 import br.com.euvickson.jetweatherforecast.widgets.WeatherAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,17 +42,23 @@ fun SearchScreen(navController: NavController) {
             navController = navController,
             icon = Icons.Default.ArrowBack,
             isMainScreen = false,
+            initialPadding = 20.dp
             ) {
             navController.popBackStack()
         }
     }) {
-        Surface () {
+        Surface {
             Column(
                 modifier = Modifier.padding(it),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                
+                SearchBar(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .align(Alignment.CenterHorizontally)) { mCity ->
+                    navController.navigate(WeatherScreens.MainScreen.name +"/$mCity")
+                }
             }
         }
     }
@@ -60,17 +67,18 @@ fun SearchScreen(navController: NavController) {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
+    modifier: Modifier = Modifier,
     onSearch: (String) -> Unit = {}
 ) {
 
-    val searchQueryState = rememberSaveable() { mutableStateOf("") }
+    val searchQueryState = rememberSaveable { mutableStateOf("") }
     val keyBoardController = LocalSoftwareKeyboardController.current
     val valid = remember(searchQueryState.value) { searchQueryState.value.trim().isNotEmpty() }
 
-    Column {
+    Column (modifier) {
         CommonTextField(
             valueState = searchQueryState,
-            placeholder = "Seattle",
+            placeholder = "Search",
             onAction = KeyboardActions {
                 if (!valid) return@KeyboardActions
                 onSearch(searchQueryState.value.trim())

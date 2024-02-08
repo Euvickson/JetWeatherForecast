@@ -2,10 +2,12 @@ package br.com.euvickson.jetweatherforecast.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.euvickson.jetweatherforecast.screens.Search.SearchScreen
+import androidx.navigation.navArgument
+import br.com.euvickson.jetweatherforecast.screens.search.SearchScreen
 import br.com.euvickson.jetweatherforecast.screens.main.MainScreen
 import br.com.euvickson.jetweatherforecast.screens.main.MainViewModel
 import br.com.euvickson.jetweatherforecast.screens.splash.WeatherSplashScreen
@@ -19,9 +21,22 @@ fun WeatherNavigation() {
             WeatherSplashScreen(navController)
         }
 
-        composable(WeatherScreens.MainScreen.name) {
-            val mainViewModel = hiltViewModel<MainViewModel>()
-            MainScreen(navController, mainViewModel)
+        val route = WeatherScreens.MainScreen.name
+        composable("$route/{city}",
+            arguments = listOf(
+                navArgument(name = "city") {
+                    type = NavType.StringType
+                }
+            )
+        ) { navBack ->
+
+            navBack.arguments?.getString("city").let {city ->
+
+                val mainViewModel = hiltViewModel<MainViewModel>()
+                MainScreen(navController, mainViewModel, city = city)
+
+            }
+
         }
 
         composable(WeatherScreens.SearchScreen.name) {

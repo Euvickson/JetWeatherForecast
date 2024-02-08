@@ -1,9 +1,8 @@
 package br.com.euvickson.jetweatherforecast.widgets
 
-import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.MoreVert
@@ -33,6 +32,7 @@ fun WeatherAppBar(
     icon: ImageVector? = null,
     isMainScreen: Boolean = true,
     elevation: Dp = 0.dp,
+    initialPadding: Dp = 0.dp,
     navController: NavController,
     onAddActionClicked: () -> Unit = {},
     onButtonClicked: () -> Unit = {}
@@ -44,7 +44,8 @@ fun WeatherAppBar(
                 text = title,
                 color = MaterialTheme.colorScheme.tertiary,
                 style = TextStyle(fontWeight = FontWeight.Bold),
-                fontSize = 15.sp
+                fontSize = 15.sp,
+                modifier = Modifier.padding(start = initialPadding)
             )
         },
         actions = {
