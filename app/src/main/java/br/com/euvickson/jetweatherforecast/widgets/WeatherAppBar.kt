@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import br.com.euvickson.jetweatherforecast.navigation.WeatherScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -119,7 +120,10 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
     ) {
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
+            onDismissRequest = {
+                expanded = false
+                showDialog.value = false
+                               },
             modifier = Modifier.width(140.dp)
         ) {
 
@@ -136,17 +140,22 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
                                 "About" -> Icons.Default.Info
                                 "Favorites" -> Icons.Default.FavoriteBorder
                                 else -> Icons.Default.Settings
-
                             },
                             contentDescription = null,
                             tint = Color.LightGray
                         )
                     },
                     text = {
-                        Text(text = text, fontWeight = FontWeight.W300)
-                    },
-                    modifier = Modifier.clickable {
-
+                        Text(text = text,
+                            fontWeight = FontWeight.W300,
+                            modifier = Modifier.clickable {
+                            navController.navigate(route = when (text) {
+                                "About" -> WeatherScreens.AboutScreen.name
+                                "Favorites" -> WeatherScreens.FavoriteScreen.name
+                                else -> WeatherScreens.SettingsScreen.name
+                            }
+                            )
+                        })
                     })
 
             }
