@@ -10,6 +10,6 @@ data class Favorite(
     @ColumnInfo(name = "city")
     val city: String,
 
-    @ColumnInfo(name = "Country")
+    @ColumnInfo(name = "country")
     val country: String
 )
