@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import br.com.euvickson.jetweatherforecast.screens.Favorite.FavoriteScreen
+import br.com.euvickson.jetweatherforecast.screens.favorite.FavoriteScreen
 import br.com.euvickson.jetweatherforecast.screens.about.AboutScreen
 import br.com.euvickson.jetweatherforecast.screens.main.MainScreen
 import br.com.euvickson.jetweatherforecast.screens.main.MainViewModel

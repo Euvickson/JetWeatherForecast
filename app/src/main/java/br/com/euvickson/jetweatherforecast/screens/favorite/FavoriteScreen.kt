@@ -1,4 +1,4 @@
-package br.com.euvickson.jetweatherforecast.screens.Favorite
+package br.com.euvickson.jetweatherforecast.screens.favorite
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
@@ -138,7 +139,7 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
                         Icon(
                             imageVector = when (text) {
                                 "About" -> Icons.Default.Info
-                                "Favorites" -> Icons.Default.FavoriteBorder
+                                "Favorite" -> Icons.Default.FavoriteBorder
                                 else -> Icons.Default.Settings
                             },
                             contentDescription = null,
