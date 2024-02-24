@@ -1,6 +1,5 @@
 package br.com.euvickson.jetweatherforecast.widgets
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -46,7 +45,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.euvickson.jetweatherforecast.model.Favorite
 import br.com.euvickson.jetweatherforecast.navigation.WeatherScreens
@@ -119,7 +117,7 @@ fun WeatherAppBar(
                 }
 
                 Icon(
-                    imageVector = if (isAlredyFavList.isNullOrEmpty()) Icons.Default.FavoriteBorder else Icons.Default.Favorite,
+                    imageVector = if (isAlredyFavList.isEmpty()) Icons.Default.FavoriteBorder else Icons.Default.Favorite,
                     contentDescription = "FavoriteIcon",
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
@@ -128,7 +126,7 @@ fun WeatherAppBar(
                             val dataList = title.split(",")
                             val favorite = Favorite(city = dataList[0], country = dataList[1])
 
-                            if (isAlredyFavList.isNullOrEmpty()) {
+                            if (isAlredyFavList.isEmpty()) {
                                 favoriteViewModel.insertFavorite(favorite)
                                 Toast.makeText(context, "Added to the Favorites", Toast.LENGTH_SHORT).show()
                             } else {
