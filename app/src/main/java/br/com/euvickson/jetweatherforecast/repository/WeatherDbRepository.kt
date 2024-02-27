@@ -2,6 +2,7 @@ package br.com.euvickson.jetweatherforecast.repository
 
 import br.com.euvickson.jetweatherforecast.data.WeatherDao
 import br.com.euvickson.jetweatherforecast.model.Favorite
+import br.com.euvickson.jetweatherforecast.model.Unit
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -13,4 +14,10 @@ class WeatherDbRepository @Inject constructor(private val weatherDao: WeatherDao
     suspend fun deleteAllFavorites() = weatherDao.deleteAllFavorites()
     suspend fun deleteFavorite(favorite: Favorite) = weatherDao.deleteFavorite(favorite)
     suspend fun getFavById(city: String) = weatherDao.getFavById(city)
+
+    fun getUnits(): Flow<List<Unit>> = weatherDao.getUnits()
+    suspend fun insertUnit(unit: Unit) = weatherDao.insertUnit(unit)
+    suspend fun updateUnit(unit: Unit) = weatherDao.updateUnit(unit)
+    suspend fun deleteAllUnits() = weatherDao.deleteAllUnits()
+    suspend fun deleteUnit(unit: Unit) = weatherDao.deleteUnit(unit)
 }
