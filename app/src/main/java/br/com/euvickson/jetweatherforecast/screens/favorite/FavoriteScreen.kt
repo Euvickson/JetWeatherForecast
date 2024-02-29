@@ -95,7 +95,7 @@ fun CityRow(
                        navController.navigate(WeatherScreens.MainScreen.name +"/${favorite.city}")
             },
         shape = CircleShape.copy(topEnd = CornerSize(6.dp)),
-        color = Color(0xFFFFC400)
+        color = MaterialTheme.colorScheme.primaryContainer
     ) {
 
         Row(
@@ -103,7 +103,7 @@ fun CityRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(text = favorite.city, modifier = Modifier.padding(start = 4.dp))
+            Text(text = favorite.city, modifier = Modifier.padding(start = 4.dp), color = Color.Black)
 
             Surface(
                 modifier = Modifier.padding(0.dp),
@@ -113,7 +113,8 @@ fun CityRow(
                 Text(
                     text = favorite.country,
                     modifier = Modifier.padding(4.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black
                 )
             }
 

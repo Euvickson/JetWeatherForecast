@@ -20,7 +20,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,8 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.euvickson.jetweatherforecast.data.DataOrException
+import br.com.euvickson.jetweatherforecast.model.Unit
 import br.com.euvickson.jetweatherforecast.model.Weather
 import br.com.euvickson.jetweatherforecast.navigation.WeatherScreens
+import br.com.euvickson.jetweatherforecast.screens.settings.SettingsViewModel
 import br.com.euvickson.jetweatherforecast.utils.formatDate
 import br.com.euvickson.jetweatherforecast.utils.formatDecimals
 import br.com.euvickson.jetweatherforecast.widgets.DayInfo
@@ -45,18 +52,32 @@ import br.com.euvickson.jetweatherforecast.widgets.WeatherStateImage
 fun MainScreen(
     navController: NavController,
     mainViewModel: MainViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
     city: String?
 ) {
-    val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
-        initialValue = DataOrException(loading = true)
-    ) {
-        value = mainViewModel.getWeatherData(city = city.toString())
-    }.value
 
-    if (weatherData.loading == true) {
-        CircularProgressIndicator()
-    } else if (weatherData.data != null) {
-        MainScaffold(weather = weatherData.data!!, navController = navController)
+    val curCity: String = if (city!!.isBlank()) "Aracaju" else city
+    var unitFromSettingsDb = settingsViewModel.unitList.collectAsState().value
+    var unit by remember { mutableStateOf("imperial") }
+    var isImperial by remember { mutableStateOf(false) }
+
+    if (!unitFromSettingsDb.isNullOrEmpty()) {
+        unit = unitFromSettingsDb[0].unit.split(" ")[0].lowercase()
+        isImperial = unit == "imperial"
+
+        val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
+            initialValue = DataOrException(loading = true)
+        ) {
+            value = mainViewModel.getWeatherData(city = curCity, unit = unit)
+        }.value
+
+        if (weatherData.loading == true) {
+            CircularProgressIndicator()
+        } else if (weatherData.data != null) {
+            MainScaffold(weather = weatherData.data!!, navController = navController)
+        }
+    } else {
+        settingsViewModel.insertUnit(Unit("Metric (C)"))
     }
 
 }
@@ -71,7 +92,7 @@ fun MainScaffold(weather: Weather, navController: NavController) {
                 title = weather.city.name + ", ${weather.city.country}",
                 navController = navController,
                 onAddActionClicked = {
-                                     navController.navigate(WeatherScreens.SearchScreen.name)
+                    navController.navigate(WeatherScreens.SearchScreen.name)
                 },
                 elevation = 5.dp,
             ) {

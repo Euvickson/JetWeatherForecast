@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +40,12 @@ import br.com.euvickson.jetweatherforecast.widgets.WeatherAppBar
 @Composable
 fun SettingsScreen(navController: NavHostController, settingsViewModel: SettingsViewModel = hiltViewModel()) {
 
+    var unitToggleState by remember { mutableStateOf(false) }
+    val measurementUnits = listOf("Imperial (F)", "Metric (C)")
+    val choiceFromDb = settingsViewModel.unitList.collectAsState().value
+    val defaultChoice = if (choiceFromDb.isNullOrEmpty()) measurementUnits[0] else choiceFromDb[0].unit
+    var choiceState by remember { mutableStateOf(defaultChoice) }
+
     Scaffold (topBar = {
         WeatherAppBar(
             navController = navController,
@@ -46,16 +53,14 @@ fun SettingsScreen(navController: NavHostController, settingsViewModel: Settings
             icon = Icons.Default.ArrowBack,
             isMainScreen = false,
             initialPadding = 100.dp
-        )
+        ) {
+            navController.popBackStack()
+        }
     }){
         Surface (modifier = Modifier
             .padding(it)
             .fillMaxSize()){
             Column (verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-
-                var unitToggleState by remember { mutableStateOf(false) }
-                val measurementUnits = listOf("Imperial (F)", "Metric (C)")
-                var choiceState by remember { mutableStateOf("") }
 
                 Text(
                     text = "Change Units Of Measurement",
@@ -64,8 +69,8 @@ fun SettingsScreen(navController: NavHostController, settingsViewModel: Settings
 
                 IconToggleButton(
                     checked = !unitToggleState,
-                    onCheckedChange = {
-                        unitToggleState = !it
+                    onCheckedChange = {boolean ->
+                        unitToggleState = !boolean
                         choiceState = if (unitToggleState) {
                             "Imperial (F)"
                         } else {
@@ -85,6 +90,7 @@ fun SettingsScreen(navController: NavHostController, settingsViewModel: Settings
                     onClick = {
                         settingsViewModel.deleteAllUnits()
                         settingsViewModel.insertUnit(Unit(unit = choiceState ))
+                        navController.popBackStack()
                     },
                     modifier = Modifier
                         .padding(3.dp)
