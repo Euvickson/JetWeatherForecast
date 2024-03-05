@@ -7,4 +7,4 @@ object Constants {
     const val API_KEY = "Place The API Key Here"
 }
 
-// https://api.openweathermap.org/data/2.5/forecast/daily?q=lisbon&units=imperial
+// https://api.openweathermap.org/data/2.5/forecast/daily?q=lisbon&units=metric
